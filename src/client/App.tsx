@@ -10,9 +10,18 @@ class App extends React.Component<IAppProps, IAppState> {
 
 	async componentDidMount() {
 		try {
-			let r = await fetch('/api/hello');
-			let name = await r.json();
-			this.setState({ name });
+			
+			const badge = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjYsImlhdCI6MTU5ODMxMzgzMSwiZXhwIjoxNTk4OTE4NjMxfQ.LDkMxG51ntZ1bo8awYGOYDnWpsd5WiU3QYj2bIbqagM'
+
+			await fetch('/api/lulz', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': 'Bearer ' + badge
+				},
+				body: JSON.stringify({ token: badge })
+			})
+
 		} catch (error) {
 			console.log(error);
 		}
