@@ -6,7 +6,7 @@ const router = Router();
 
 // GET /api/lulz
 router.get('/', (req, res) => {
-  const token = req.headers['authorization'].split('')[1];
+  const token = req.headers['authorization'].split(' ')[1];
   const verified = jwt.verify(token, config.auth.secret);
   console.log(verified);
   if (!token) {

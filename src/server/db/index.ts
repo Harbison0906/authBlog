@@ -19,7 +19,13 @@ export const Query = <T = any> (query: string, value?: any) => {
 };
 
 import authors from './queries/authors';
+import blogs from './queries/blogs';
+import blogtags from './queries/blogtags';
+import tags from './queries/tags';
 
 export default {
-  authors
+  authors,
+  blogs,
+  blogtags,
+  tags
 }
