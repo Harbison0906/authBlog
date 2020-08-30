@@ -1,9 +1,11 @@
 import * as express from 'express';
+import * as jwt from 'jsonwebtoken';
+import config from '../../config';
 import db from '../../db';
 
 const router = express.Router();
 
-router.get('/:id?' async (req, res) => {
+router.get('/:id?', async (req, res) => {
   const id = Number(req.params.id)
   try {
     if (id) {
@@ -15,17 +17,48 @@ router.get('/:id?' async (req, res) => {
     }
   } catch (error) {
     console.log(error)
-    res.sendStatus(500).json('Oops, something went wrong...This is awkward...')
+    res.status(500).json('Oops, something went wrong...This is awkward...')
   }
 })
 
 router.post('/', async (req, res) => {
   const blog = req.body;
+  const token = req.headers['authorization'].split(' ')[1];
+  const verified = jwt.verify(token, config.auth.secret);
+  console.log(verified);
+
   try {
     const result = await db.blogs.insert(blog.title, blog.content);
+    if (!token) {
+      res.sendStatus(401);
+    } else {
     res.json(result);
+    } 
   } catch (error) {
     console.log(error);
-    res.sendStatus(500).json('Oops, something went wrong...This is awkward...')
+    res.status(500).json('Oops, something went wrong...')
   }
 })
+
+router.put('/:id', async (req, res) => {
+  const id = Number(req.params.id);
+  const blog = req.body;
+  try {
+    const updatePost =  await db.blogs.update(blog.title, blog.content, id)
+    res.json('Post updated!');
+  } catch (error) {
+    console.log(error);
+    res.status(500).json('Oops, something went wrong...')
+  }
+})
+
+router.delete('/:blogid', async (req, res) => {
+  const blogid = Number(req.params.blogid);
+  await db.blogtags.destroy(blogid); //delete this blog's reference first
+  await db.blogs.destroy(blogid); //delete safely now from blogs table
+  res.json({msg: 'RIP, post...' }); 
+});
+
+
+
+export default router;

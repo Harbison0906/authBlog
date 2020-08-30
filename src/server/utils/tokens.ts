@@ -1,12 +1,27 @@
+import * as crypto from 'crypto';
 import * as jwt from 'jsonwebtoken';
 import config from '../config';
+import db from '../db';
 import { IPayload } from './types';
- 
-export const createToken = (payload: IPayload) => {
-  const token = jwt.sign(payload, config.auth.secret, { expiresIn: '7d' }); 
+
+export const createToken = async (payload: IPayload) => {
+  let tokenid: any = await db.tokens.insert(payload.userid);
+  payload.accesstokenid = tokenid.insertId;
+  payload.unique = crypto.randomBytes(32).toString('hex');
+  const token = await jwt.sign(payload.accesstokenid, config.auth.secret, { expiresIn: '7d' });
+  await db.tokens.update(payload.accesstokenid, token);
   return token;
 }
 
+export const validToken = async (token: string) => {
+  let payload: IPayload = <IPayload>jwt.decode(token);
+  let [accesstokenid] = await db.tokens.findOne(payload.accesstokenid, token);
+  if (!accesstokenid) {
+    throw new Error('Invalid Token!');
+  } else {
+    return payload;
+  }
+}
 
 /*
   {
