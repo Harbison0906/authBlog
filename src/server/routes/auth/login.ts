@@ -5,13 +5,25 @@ import { createToken } from '../../utils/tokens';
 
 const router = express.Router();
 
-router.post('/', passport.authenticate('local'), async (req, res) => {
+router.post('/', passport.authenticate('local'), async (req: ReqUser, res) => {
   try {
-    let token = await createToken({ userid: req.user. })
+    let token = await createToken({ userid: req.user.id });
+    res.json({
+      token,
+      role: req.user.role,
+      userid: req.user.id
+    })
   } catch (error) {
     console.log(error);
     res.status(500).json('Internal Server Error');
   }
 })
+
+interface ReqUser extends express.Request {
+  user: {
+    id: number;
+    role: string;
+  }
+}
 
 export default router;
