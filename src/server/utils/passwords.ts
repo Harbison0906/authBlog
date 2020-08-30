@@ -6,6 +6,6 @@ export const generateHash = (password: string) => {
   return hash;
 }
 
-export const = comparePassword = (password: string, hash: string) => {
+export const comparePassword = (password: string, hash: string) => {
   return bcrypt.compareSync(password, hash);
 }
