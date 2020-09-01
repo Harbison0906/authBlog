@@ -2,8 +2,17 @@ import * as express from 'express';
 import * as jwt from 'jsonwebtoken';
 import config from '../../config';
 import db from '../../db';
+import { RequestHandler } from 'express-serve-static-core';
 
 const router = express.Router();
+
+const isLoggedIn: RequestHandler = (req: ReqUser, res, next) => {
+if(!req.user || req.user.role !== 'admin') {
+  return res.sendStatus(401);
+} else {
+  return next();
+}
+};
 
 router.get('/:id?', async (req, res) => {
   const id = Number(req.params.id)
@@ -21,7 +30,7 @@ router.get('/:id?', async (req, res) => {
   }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', isLoggedIn, async (req, res) => {
   const blog = req.body;
   const token = req.headers['authorization'].split(' ')[1];
   const verified = jwt.verify(token, config.auth.secret);
@@ -40,7 +49,7 @@ router.post('/', async (req, res) => {
   }
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', isLoggedIn, async (req, res) => {
   const id = Number(req.params.id);
   const blog = req.body;
   try {
@@ -59,7 +68,7 @@ router.put('/:id', async (req, res) => {
   }
 })
 
-router.delete('/:blogid', async (req, res) => {
+router.delete('/:blogid', isLoggedIn, async (req, res) => {
   const blogid = Number(req.params.blogid);
   const token = req.headers['authorization'].split(' ')[1];
   const verified = jwt.verify(token, config.auth.secret);
@@ -73,6 +82,13 @@ router.delete('/:blogid', async (req, res) => {
   }
 });
 
+
+interface ReqUser extends express.Request {
+  user: {
+    id: number;
+    role: string;
+  }
+}
 
 
 export default router;

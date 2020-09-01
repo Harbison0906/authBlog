@@ -1,9 +1,9 @@
-import { Router } from 'express';
+import * as express from 'express';
 import { generateHash } from '../../utils/passwords';
 import db from '../../db';
 import { createToken } from '../../utils/tokens';
 
-const router = Router();
+const router = express.Router();
 
 // POST /auth/register
 router.post('/', async (req, res) => {
@@ -11,7 +11,7 @@ router.post('/', async (req, res) => {
   newAuthor.password = generateHash(newAuthor.password)
   try {
     const cannedResponse = await db.authors.insert(newAuthor);
-    const token = createToken({userid: cannedResponse.insertId})
+    const token = await createToken({userid: cannedResponse.insertId})
     res.json(token);
   } catch (error) {
     console.log(error);
