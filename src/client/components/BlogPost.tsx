@@ -14,6 +14,7 @@ export default class BlogPost extends Component<IBlogPostProps, IBlogPostState> 
       blogs: {
         id: null,
         title: null,
+        authorid: null,
         content: null,
         _created: null
       }
@@ -38,7 +39,7 @@ export default class BlogPost extends Component<IBlogPostProps, IBlogPostState> 
             {this.state.tags.map(tag => (
               <span className="badge badge-pill badge-primary mx-2" key={tag.name}>{tag.name}</span>
             ))}
-            <h6 className="card-author">By Seth Harbison</h6>
+            <h6 className="card-author">By `${this.state.blogs.authorid}`</h6>
             <p className="card-date">{moment(this.state.blogs._created).format('MMMM Do, YYYY')}</p>
             <p className="card-text">{this.state.blogs.content}</p>
           </div>
@@ -55,6 +56,7 @@ interface IBlogPostState {
   blogs: {
     id: string,
     title: string,
+    authorid: number,
     content: string,
     _created: number
   }

@@ -1,45 +1,40 @@
 import * as React from 'react';
+import { BrowserRouter, Switch, Route, Link, Redirect } from 'react-router-dom';
+import Home from './components/Home';
+import NewBlog from './components/NewBlog';
+import EditBlog from './components/EditBlog';
+import BlogPost from './components/BlogPost';
 
-class App extends React.Component<IAppProps, IAppState> {
-	constructor(props: IAppProps) {
-		super(props);
-		this.state = {
-			name: null
-		};
-	}
-
-	async componentDidMount() {
-		try {
-			
-			const badge = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjYsImlhdCI6MTU5ODMxMzgzMSwiZXhwIjoxNTk4OTE4NjMxfQ.LDkMxG51ntZ1bo8awYGOYDnWpsd5WiU3QYj2bIbqagM'
-
-			await fetch('/api/lulz', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'Authorization': 'Bearer ' + badge
-				},
-				body: JSON.stringify({ token: badge })
-			})
-
-		} catch (error) {
-			console.log(error);
-		}
-	}
+export default class App extends React.Component {
 
 	render() {
 		return (
-			<main className="container my-5">
-				<h1 className="text-primary text-center">Hello {this.state.name}!</h1>
+			<main className="container" id="background">
+				<BrowserRouter>
+					<section className="header" id="header">
+						<div className="jumbotron jumbotron-fluid">
+							<div className="container text-center">
+
+								<h1 className="display-4 align-middle">Attack of the Blog</h1>
+
+							</div>
+							<br />
+						</div>
+						<Link className="link" to="/">Home</Link>
+						<Link className="link" to="/newblog">New Post</Link>
+					</section>
+					<Switch>
+						<Route exact path="/" component={Home} />
+						<Route exact path="/newblog" component={NewBlog} />
+						<Route exact path="/edit/:id" component={EditBlog}/>
+						<Route exact path="/blogpost/:id" component={BlogPost} />
+						<Redirect from="*" to="/"/>
+					</Switch>
+				</BrowserRouter>
+
 			</main>
 		);
 	}
 }
 
-export interface IAppProps {}
 
-export interface IAppState {
-	name: string;
-}
-
-export default App;

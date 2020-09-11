@@ -40,7 +40,7 @@ router.post('/', isLoggedIn, async (req, res) => {
     if (!token) {
       res.sendStatus(401);
     } else {
-      const result = await db.blogs.insert(blog.title, blog.content);
+      const result = await db.blogs.insert(blog.newBlog);
       res.json(result);
     }
   } catch (error) {
