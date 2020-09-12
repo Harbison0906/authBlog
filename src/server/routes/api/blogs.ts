@@ -7,7 +7,7 @@ import { RequestHandler } from 'express-serve-static-core';
 const router = express.Router();
 
 const isLoggedIn: RequestHandler = (req: ReqUser, res, next) => {
-if(!req.user || req.user.role !== 'admin') {
+if(!req.user || req.user.role !== 1) {
   return res.sendStatus(401);
 } else {
   return next();

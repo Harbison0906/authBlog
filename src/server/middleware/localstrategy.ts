@@ -11,13 +11,10 @@ passport.use(new LocalStrategy.Strategy({
   session: false}, 
   async (email, password, done) => {
     try {
-      console.log('starting strategy with login attempt by: ' + email);
 
       let [user]: any = await db.authors.findOneByEmail(email);
-      console.log('author email found! author record:', user);
-
+      console.log(comparePassword(password, user.password));
       if(user && comparePassword(password, user.password)) {
-        console.log('how did it get here and still not work??');
 
         done(null, user);
       } else {
