@@ -23,9 +23,13 @@ export default class BlogPost extends Component<IBlogPostProps, IBlogPostState> 
 
   async componentDidMount() {
     let id = this.props.match.params.id;
+    console.log('test1');
     const resBlogtags = await fetch(`/api/blogtags/${id}`);
+    console.log('test2');
     const blogtags = await resBlogtags.json();
+    console.log('test3');
     const resBlogs = await fetch(`/api/blogs/${id}`);
+    console.log('test4');
     const blogs = await resBlogs.json();
     this.setState({ tags: blogtags, blogs });
   }
@@ -39,7 +43,7 @@ export default class BlogPost extends Component<IBlogPostProps, IBlogPostState> 
             {this.state.tags.map(tag => (
               <span className="badge badge-pill badge-primary mx-2" key={tag.name}>{tag.name}</span>
             ))}
-            <h6 className="card-author">By `${this.state.blogs.authorid}`</h6>
+            <h6 className="card-author">By {this.state.blogs.authorid}</h6>
             <p className="card-date">{moment(this.state.blogs._created).format('MMMM Do, YYYY')}</p>
             <p className="card-text">{this.state.blogs.content}</p>
           </div>

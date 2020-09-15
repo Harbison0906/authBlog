@@ -65,7 +65,7 @@ export default class NewBlog extends Component<INewBlogProps, INewBlogState> {
               <div className="card-body">
                 <form className="form-group">
                   <input value={this.state.title} onChange={this.handleUserChange} id="title" type="text" className="form-control shadow-sm" placeholder="Title" aria-label="Title" aria-describedby="basic-addon1" />
-                  
+
                   <select className="form-control" value={this.state.tagid} onChange={this.handleTagChange}>
                     <option value="">Choose a tag ..</option>
                     <option value="1">Traveling</option>
