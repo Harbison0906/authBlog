@@ -30,19 +30,19 @@ router.get('/:id?', async (req, res) => {
   }
 })
 
-router.post('/', isLoggedIn, async (req, res) => {
+router.post('/', /*isLoggedIn,*/ async (req, res) => {
   const blog = req.body;
-  const token = req.headers['authorization'].split(' ')[1];
-  const verified = jwt.verify(token, config.auth.secret);
-  console.log(verified);
+  // const token = req.headers['authorization'].split(' ')[1];
+  // const verified = jwt.verify(token, config.auth.secret);
+  // console.log(verified);
 
   try {
-    if (!token) {
-      res.sendStatus(401);
-    } else {
+    // if (!token) {
+    //   res.sendStatus(401);
+    // } else {
       const result = await db.blogs.insert(blog.newBlog);
       res.json(result);
-    }
+    // }
   } catch (error) {
     console.log(error);
     res.status(500).json('Oops, something went wrong...')

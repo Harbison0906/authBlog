@@ -12,9 +12,13 @@ export default class NewBlog extends Component<INewBlogProps, INewBlogState> {
     };
   }
 
-  handleUserChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ title: event.target.value });
   }
+
+  // handleAuthorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   this.setState({ authorid: event.target.value });
+  // }
 
   handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     this.setState({ content: event.target.value });
@@ -64,7 +68,7 @@ export default class NewBlog extends Component<INewBlogProps, INewBlogState> {
             <div className="card shadow-sm">
               <div className="card-body">
                 <form className="form-group">
-                  <input value={this.state.title} onChange={this.handleUserChange} id="title" type="text" className="form-control shadow-sm" placeholder="Title" aria-label="Title" aria-describedby="basic-addon1" />
+                  <input value={this.state.title} onChange={this.handleTitleChange} id="title" type="text" className="form-control shadow-sm" placeholder="Title" aria-label="Title" aria-describedby="basic-addon1" />
 
                   <select className="form-control" value={this.state.tagid} onChange={this.handleTagChange}>
                     <option value="">Choose a tag ..</option>

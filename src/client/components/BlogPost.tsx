@@ -23,13 +23,9 @@ export default class BlogPost extends Component<IBlogPostProps, IBlogPostState> 
 
   async componentDidMount() {
     let id = this.props.match.params.id;
-    console.log('test1');
     const resBlogtags = await fetch(`/api/blogtags/${id}`);
-    console.log('test2');
     const blogtags = await resBlogtags.json();
-    console.log('test3');
     const resBlogs = await fetch(`/api/blogs/${id}`);
-    console.log('test4');
     const blogs = await resBlogs.json();
     this.setState({ tags: blogtags, blogs });
   }
