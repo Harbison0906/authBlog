@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { RouteComponentProps } from 'react-router';
+import { isNull } from 'util';
 
 export default class NewBlog extends Component<INewBlogProps, INewBlogState> {
 
@@ -7,6 +8,7 @@ export default class NewBlog extends Component<INewBlogProps, INewBlogState> {
     super(props);
     this.state = {
       title: '',
+      authorid: '',
       content: '',
       tagid: ''
     };
@@ -16,9 +18,9 @@ export default class NewBlog extends Component<INewBlogProps, INewBlogState> {
     this.setState({ title: event.target.value });
   }
 
-  // handleAuthorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   this.setState({ authorid: event.target.value });
-  // }
+  handleAuthorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ authorid: event.target.value });
+  }
 
   handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     this.setState({ content: event.target.value });
@@ -70,6 +72,8 @@ export default class NewBlog extends Component<INewBlogProps, INewBlogState> {
                 <form className="form-group">
                   <input value={this.state.title} onChange={this.handleTitleChange} id="title" type="text" className="form-control shadow-sm" placeholder="Title" aria-label="Title" aria-describedby="basic-addon1" />
 
+                  <input value={this.state.authorid} onChange={this.handleAuthorChange} id="author" type="text" className="form-control shadow-sm" placeholder="Author" aria-label="Author" aria-describedby="basic-addon1" />
+
                   <select className="form-control" value={this.state.tagid} onChange={this.handleTagChange}>
                     <option value="">Choose a tag ..</option>
                     <option value="1">Traveling</option>
@@ -105,6 +109,7 @@ interface INewBlogProps extends RouteComponentProps { }
 
 interface INewBlogState {
   title: string;
+  authorid: string;
   content: string;
   tagid: string;
 }
