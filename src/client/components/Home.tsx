@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import * as moment from 'moment';
 import { IBlog } from '../utils/interfaces';
 import { Link, RouteComponentProps } from 'react-router-dom';
+import { json } from '../utils/api';
+
 
 export default class Home extends Component<IHomeProps, IHomeState> {
 
@@ -11,12 +13,14 @@ export default class Home extends Component<IHomeProps, IHomeState> {
       blogs: []
     }
   }
-  componentDidMount() {
-    fetch('/api/blogs')
-      .then(res => res.json())
-      .then(blogs => this.setState({ blogs }));
+ async componentDidMount() {
+    try {
+      let blogs = await json('/api/blogs');
+      this.setState({ blogs })
+    } catch (e) {
+     console.log(e);
   }
-
+ }
   render() {
     return (
       <main className="container timeline">

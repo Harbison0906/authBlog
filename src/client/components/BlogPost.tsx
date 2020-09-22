@@ -3,6 +3,7 @@ import { RouteComponentProps } from 'react-router';
 import * as moment from 'moment';
 import { IBlog } from '../utils/interfaces';
 import { ITags } from '../utils/interfaces';
+import { json } from '../utils/api';
 
 
 export default class BlogPost extends Component<IBlogPostProps, IBlogPostState> {
@@ -22,12 +23,16 @@ export default class BlogPost extends Component<IBlogPostProps, IBlogPostState> 
   }
 
   async componentDidMount() {
-    let id = this.props.match.params.id;
-    const resBlogtags = await fetch(`/api/blogtags/${id}`);
-    const blogtags = await resBlogtags.json();
-    const resBlogs = await fetch(`/api/blogs/${id}`);
-    const blogs = await resBlogs.json();
-    this.setState({ tags: blogtags, blogs });
+    try {
+      let id = this.props.match.params.id;
+      // const resBlogtags = await fetch(`/api/blogtags/${id}`);
+      const blogtags = await json(`/api/blogtags/${id}`);
+      // const resBlogs = await fetch(`/api/blogs/${id}`);
+      const blogs = await json(`/api/blogs/${id}`);
+      this.setState({ tags: blogtags, blogs });
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   render() {

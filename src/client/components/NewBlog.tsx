@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { RouteComponentProps } from 'react-router';
-import { isNull } from 'util';
+import { json, User } from '../utils/api';
 
 export default class NewBlog extends Component<INewBlogProps, INewBlogState> {
 
@@ -32,14 +32,20 @@ export default class NewBlog extends Component<INewBlogProps, INewBlogState> {
 
   addBlog = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const data = { title: this.state.title, content: this.state.content }
-    fetch('/api/blogs', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
+    const data = { title: this.state.title, content: this.state.content, authorid: this.state.authorid }
+    
+    try {
+      let result = json('/api/blogs', 'POST', data);
+    } catch (e) {
+      throw e;
+    };
+    // fetch('/api/blogs', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify(data)
+    // })
       .then(res => res.json())
       .then(data => {
         if (this.state.tagid) {
