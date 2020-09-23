@@ -30,41 +30,35 @@ export default class NewBlog extends Component<INewBlogProps, INewBlogState> {
     this.setState({ tagid: event.target.value });
   }
 
-  addBlog = (e: React.MouseEvent<HTMLButtonElement>) => {
+  addBlog = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const data = { title: this.state.title, content: this.state.content, authorid: this.state.authorid }
-    
     try {
       let result = json('/api/blogs', 'POST', data);
+      const response = await res.json()
+        .then(data => {
+          if (this.state.tagid) {
+            let result = json('/api/blogtags', 'POST');
+            //replaces code below
+            /*fetch('/api/blogtags', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ blogid: data.insertId, tagid: this.state.tagid })
+            })*/
+            const response = await res.json()
+              .then(created => {
+                console.log(created);
+                this.props.history.push('/');
+              })
+          } else {
+            this.props.history.push('/');
+          }
+        })
     } catch (e) {
       throw e;
     };
-    // fetch('/api/blogs', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(data)
-    // })
-      .then(res => res.json())
-      .then(data => {
-        if (this.state.tagid) {
-          fetch('/api/blogtags', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ blogid: data.insertId, tagid: this.state.tagid })
-          }).then(res => res.json())
-            .then(created => {
-              console.log(created);
-              this.props.history.push('/');
-            })
-        } else {
-          this.props.history.push('/');
-        }
-      })
-
   }
 
   render() {
