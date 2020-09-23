@@ -33,32 +33,15 @@ export default class NewBlog extends Component<INewBlogProps, INewBlogState> {
   addBlog = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const data = { title: this.state.title, content: this.state.content, authorid: this.state.authorid }
-    try {
-      let result = json('/api/blogs', 'POST', data);
-      const response = await res.json()
-        .then(data => {
-          if (this.state.tagid) {
-            let result = json('/api/blogtags', 'POST');
-            //replaces code below
-            /*fetch('/api/blogtags', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ blogid: data.insertId, tagid: this.state.tagid })
-            })*/
-            const response = await res.json()
-              .then(created => {
-                console.log(created);
-                this.props.history.push('/');
-              })
-          } else {
-            this.props.history.push('/');
-          }
-        })
-    } catch (e) {
-      throw e;
-    };
+    const result = await json('/api/blogs', 'POST', data);
+    console.log(result);
+    if (this.state.tagid) {
+      const tagData = { blogid: result.insertId, tagid: this.state.tagid };
+      const nextResult = await json('/api/blogtags', 'POST', tagData);
+      console.log(nextResult);
+    }
+    this.props.history.push('/');
+
   }
 
   render() {
