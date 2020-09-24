@@ -4,6 +4,7 @@ import Home from './components/Home';
 import NewBlog from './components/NewBlog';
 import EditBlog from './components/EditBlog';
 import BlogPost from './components/BlogPost';
+import Login from './components/Login';
 
 export default class App extends React.Component {
 
@@ -28,6 +29,7 @@ export default class App extends React.Component {
 						<Route exact path="/newblog" component={NewBlog} />
 						<Route exact path="/edit/:id" component={EditBlog}/>
 						<Route exact path="/blogpost/:id" component={BlogPost} />
+						<Route exact path="/login" component={Login} />
 						<Redirect from="*" to="/"/>
 					</Switch>
 				</BrowserRouter>

@@ -30,9 +30,15 @@ export default class NewBlog extends Component<INewBlogProps, INewBlogState> {
     this.setState({ tagid: event.target.value });
   }
 
+  componentDidMount() {
+    if(!User || User.userid === null || User.role !== 1) {
+      this.props.history.replace('/login')
+    }
+  }
+
   addBlog = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const data = { title: this.state.title, content: this.state.content, authorid: this.state.authorid }
+    const data = { title: this.state.title, content: this.state.content, authorid: User.userid }
     const result = await json('/api/blogs', 'POST', data);
     console.log(result);
     if (this.state.tagid) {
@@ -84,7 +90,7 @@ export default class NewBlog extends Component<INewBlogProps, INewBlogState> {
       </div>
 
     );
-  }
+  };
 
 }
 
