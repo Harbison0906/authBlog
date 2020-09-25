@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { RouteComponentProps } from 'react-router';
+import { json, SetAccessToken } from '../utils/api';
 import { IBlog } from '../utils/interfaces';
 
 export default class EditBlog extends Component<IEditBlogProps, IEditBlogState> {
@@ -26,21 +27,32 @@ export default class EditBlog extends Component<IEditBlogProps, IEditBlogState> 
       .then((blog: IBlog) => this.setState({ title: blog.title, content: blog.content }));
   }
 
-  editBlog = (e: React.MouseEvent<HTMLButtonElement>) => {
+  editBlog = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const data = { title: this.state.title, content: this.state.content }
-    fetch(`/api/blogs/${this.props.match.params.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
+    let result = await json(`/api/blogs/${this.props.match.params.id}`, 'PUT')
+    if (result) {
+      SetAccessToken(result.token, { userid: result.userid, role: result.role });
+      if (result.role === 1) {
         this.props.history.push('/');
-      })
+      } else {
+
+      }
+    } else {
+
+    }
+    // fetch(`/api/blogs/${this.props.match.params.id}`, {
+    //   method: 'PUT',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify(data)
+    // })
+    //   .then(res => res.json())
+    //   .then(data => {
+    //     console.log(data);
+    //     this.props.history.push('/');
+    //   })
   }
 
   deleteBlog = (e: React.MouseEvent<HTMLButtonElement>) => {
