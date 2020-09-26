@@ -8,6 +8,7 @@ const router = express.Router();
 
 const isLoggedIn: RequestHandler = (req: ReqUser, res, next) => {
 if(!req.user || req.user.role !== 1) {
+  console.log('Not logged in!')
   return res.sendStatus(401);
 } else {
   return next();
@@ -52,6 +53,7 @@ router.post('/', /*isLoggedIn,*/ async (req, res) => {
 router.put('/:id', isLoggedIn, async (req, res) => {
   const id = Number(req.params.id);
   const blog = req.body;
+  
   try {
     const token = req.headers['authorization'].split(' ')[1];
     const verified = jwt.verify(token, config.auth.secret);
@@ -59,7 +61,7 @@ router.put('/:id', isLoggedIn, async (req, res) => {
     if (!token) {
       res.sendStatus(401);
     } else {
-      const updatePost = await db.blogs.update(id, blog.title, blog.content);
+      await db.blogs.update(id, blog.title, blog.content);
       res.json('Post updated!');
     }
   } catch (error) {
@@ -86,7 +88,7 @@ router.delete('/:blogid', isLoggedIn, async (req, res) => {
 interface ReqUser extends express.Request {
   user: {
     id: number;
-    role: string;
+    role: number;
   }
 }
 

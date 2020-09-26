@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { json, SetAccessToken } from '../utils/api';
+import { json, SetAccessToken, User } from '../utils/api';
 
 
 export default class Login extends Component<ILoginProps, ILoginState> {
@@ -12,6 +12,12 @@ export default class Login extends Component<ILoginProps, ILoginState> {
       password: ''
     };
   };
+
+  componentDidMount() {
+    if(User && User.role === 1) {
+      this.props.history.push('/newblog');
+    }
+  }
 
   handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ email: event.target.value })
