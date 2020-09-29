@@ -7,9 +7,9 @@ import db from '../db';
 passport.use(new BearerStrategy.Strategy( async (token, done) => {
   try {
     let payload = await validToken(token);
-    let [user] = await db.authors.findOneById(payload.userid);
-    if (user) {
-      done(null, user);
+    let [author] = await db.authors.find('id', payload.userid);
+    if (author) {
+      done(null, author);
     } else {
       done(null, false)
     }

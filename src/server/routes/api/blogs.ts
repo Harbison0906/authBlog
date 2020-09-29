@@ -2,18 +2,11 @@ import * as express from 'express';
 import * as jwt from 'jsonwebtoken';
 import config from '../../config';
 import db from '../../db';
-import { RequestHandler } from 'express-serve-static-core';
+import { isLoggedIn } from '../../middleware/auth-middlewares';
 
 const router = express.Router();
 
-const isLoggedIn: RequestHandler = (req: ReqUser, res, next) => {
-if(!req.user || req.user.role !== 1) {
-  console.log('Not logged in!')
-  return res.sendStatus(401);
-} else {
-  return next();
-}
-};
+
 
 router.get('/:id?', async (req, res) => {
   const id = Number(req.params.id)

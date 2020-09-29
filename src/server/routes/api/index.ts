@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.use((req, res, next) => {
   passport.authenticate('bearer', { session: false }, (err, user, info) => {
-    console.log(req.user);
+    console.log(user);
     if (user) req.user = user;
     return next();
   })(req, res, next);

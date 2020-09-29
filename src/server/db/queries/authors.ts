@@ -1,7 +1,6 @@
 import { Query } from '../';
 
-const findOneByEmail = async (email: string) => Query(`SELECT * FROM Authors WHERE email = '${email}' LIMIT 1`);
-const findOneById = async (id: number) => Query(`SELECT * FROM Authors WHERE id = ${id} LIMIT 1`)
+const find = (column: string, value: string | number) => Query('SELECT * FROM Authors WHERE ?? = ?', [column, value])
 const all = () => Query('');
 const one = () => Query('', []);
 const insert = (newAuthor: any) => Query('INSERT INTO Authors SET ?', [newAuthor]);
@@ -10,4 +9,4 @@ const destroy = () => Query('', []);
 
 
 
-export default { findOneByEmail, findOneById, all, one, insert, update, destroy }
+export default { find, all, one, insert, update, destroy }

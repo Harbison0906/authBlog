@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as passport from 'passport';
 import { createToken } from '../../utils/tokens';
-
+import { ReqUser } from '../../utils/types';
 
 const router = express.Router();
 
@@ -19,11 +19,6 @@ router.post('/', passport.authenticate('local'), async (req: ReqUser, res) => {
   }
 })
 
-interface ReqUser extends express.Request {
-  user: {
-    id: number;
-    role: string;
-  }
-}
+
 
 export default router;

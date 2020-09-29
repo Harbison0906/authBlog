@@ -3,20 +3,21 @@ import * as LocalStrategy from 'passport-local';
 import { comparePassword } from '../utils/passwords';
 import db from '../db';
 
+
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
 
-passport.use(new LocalStrategy.Strategy({ 
-  usernameField: 'email', 
-  session: false}, 
+passport.use(new LocalStrategy.Strategy({
+  usernameField: 'email',
+  session: false
+},
   async (email, password, done) => {
     try {
 
-      let [user]: any = await db.authors.findOneByEmail(email);
-      console.log(comparePassword(password, user.password));
-      if(user && comparePassword(password, user.password)) {
+      let [author] = await db.authors.find('email', email);
+      if (author && comparePassword(password, author.password)) {
 
-        done(null, user);
+        done(null, author);
       } else {
         console.log('email not found or passwords no match');
 
@@ -25,4 +26,4 @@ passport.use(new LocalStrategy.Strategy({
     } catch (e) {
       done(e);
     }
-}));
+  }));
