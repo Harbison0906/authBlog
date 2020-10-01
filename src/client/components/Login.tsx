@@ -14,7 +14,7 @@ export default class Login extends Component<ILoginProps, ILoginState> {
   };
 
   componentDidMount() {
-    if(User && User.role === 1) {
+    if(User && User.role === 'guest') {
       this.props.history.push('/newblog');
     }
   }

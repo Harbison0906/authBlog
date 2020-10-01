@@ -30,14 +30,7 @@ export default class EditBlog extends Component<IEditBlogProps, IEditBlogState> 
   editBlog = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const data = { title: this.state.title, content: this.state.content }
-    fetch(`/api/blogs/${this.props.match.params.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-      .then(res => res.json())
+    json(`/api/blogs/${this.props.match.params.id}`, 'PUT', data)
       .then(data => {
         console.log(data);
         this.props.history.push('/');
@@ -46,10 +39,7 @@ export default class EditBlog extends Component<IEditBlogProps, IEditBlogState> 
 
   deleteBlog = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    fetch(`/api/blogs/${this.props.match.params.id}`, {
-      method: 'delete'
-    })
-      .then(response => response.json())
+    json(`/api/blogs/${this.props.match.params.id}`, 'DELETE')
       .then(data => {
         console.log(data);
         this.props.history.push('/');

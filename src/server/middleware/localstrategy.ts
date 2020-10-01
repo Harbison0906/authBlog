@@ -16,11 +16,9 @@ passport.use(new LocalStrategy.Strategy({
 
       let [author] = await db.authors.find('email', email);
       if (author && comparePassword(password, author.password)) {
-
+        delete author.password;
         done(null, author);
       } else {
-        console.log('email not found or passwords no match');
-
         done(null, false);
       }
     } catch (e) {

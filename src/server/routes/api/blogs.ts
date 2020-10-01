@@ -3,6 +3,7 @@ import * as jwt from 'jsonwebtoken';
 import config from '../../config';
 import db from '../../db';
 import { isLoggedIn } from '../../middleware/auth-middlewares';
+import { ReqUser } from '../../utils/types';
 
 const router = express.Router();
 
@@ -24,19 +25,13 @@ router.get('/:id?', async (req, res) => {
   }
 })
 
-router.post('/', /*isLoggedIn,*/ async (req, res) => {
+router.post('/', isLoggedIn, async (req: ReqUser, res) => {
   const blog = req.body;
-  // const token = req.headers['authorization'].split(' ')[1];
-  // const verified = jwt.verify(token, config.auth.secret);
-  // console.log(verified);
-
+  const loggedInAuthorId = req.user.id;
   try {
-    // if (!token) {
-    //   res.sendStatus(401);
-    // } else {
-      const result = await db.blogs.insert(blog.title, blog.content, blog.authorid);
-      res.json(result);
-    // }
+    const result = await db.blogs.insert(blog.title, blog.content, loggedInAuthorId);
+    res.json(result);
+
   } catch (error) {
     console.log(error);
     res.status(500).json('Oops, something went wrong...')
@@ -46,44 +41,30 @@ router.post('/', /*isLoggedIn,*/ async (req, res) => {
 router.put('/:id', isLoggedIn, async (req, res) => {
   const id = Number(req.params.id);
   const blog = req.body;
-  
+
   try {
-    const token = req.headers['authorization'].split(' ')[1];
-    const verified = jwt.verify(token, config.auth.secret);
-    console.log(verified);
-    if (!token) {
-      res.sendStatus(401);
-    } else {
-      await db.blogs.update(id, blog.title, blog.content);
-      res.json('Post updated!');
-    }
+    await db.blogs.update(id, blog.title, blog.content);
+    res.json('Post updated!');
   } catch (error) {
     console.log(error);
     res.status(500).json('Oops, something went wrong...')
   }
 })
 
-router.delete('/:blogid', isLoggedIn, async (req, res) => {
+router.delete('/:blogid', isLoggedIn, async (req: ReqUser, res) => {
   const blogid = Number(req.params.blogid);
-  const token = req.headers['authorization'].split(' ')[1];
-  const verified = jwt.verify(token, config.auth.secret);
-  console.log(verified);
-  if (!token) {
-    res.sendStatus(401);
-  } else {
+  const loggedInAuthorId = req.user.id;
+
+  try {
     await db.blogtags.destroy(blogid); //delete this blog's reference first
-    await db.blogs.destroy(blogid); //delete safely now from blogs table
+    await db.blogs.destroy(blogid, loggedInAuthorId) //delete safely now from blogs table
     res.json({ msg: 'RIP, post...' });
-  }
-});
-
-
-interface ReqUser extends express.Request {
-  user: {
-    id: number;
-    role: number;
+  } catch (error) {
+    throw error;
   }
 }
+);
+
 
 
 export default router;

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { RouteComponentProps } from 'react-router';
 import * as moment from 'moment';
-import { IBlog } from '../utils/interfaces';
 import { ITags } from '../utils/interfaces';
 import { json } from '../utils/api';
 
@@ -17,6 +16,7 @@ export default class BlogPost extends Component<IBlogPostProps, IBlogPostState> 
         title: null,
         authorid: null,
         content: null,
+        name: null,
         _created: null
       }
     };
@@ -44,7 +44,7 @@ export default class BlogPost extends Component<IBlogPostProps, IBlogPostState> 
             {this.state.tags.map(tag => (
               <span className="badge badge-pill badge-primary mx-2" key={tag.name}>{tag.name}</span>
             ))}
-            <h6 className="card-author">By {this.state.blogs.authorid}</h6>
+            <h6 className="card-author">By {this.state.blogs.name}</h6>
             <p className="card-date">{moment(this.state.blogs._created).format('MMMM Do, YYYY')}</p>
             <p className="card-text">{this.state.blogs.content}</p>
           </div>
@@ -63,6 +63,7 @@ interface IBlogPostState {
     title: string,
     authorid: number,
     content: string,
+    name: string,
     _created: number
   }
 }

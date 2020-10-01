@@ -12,7 +12,7 @@ export const json = async <T = any>(uri: string, method: string = 'GET', body?: 
     'Content-type': 'application/json'
   };
 
-  if(AccessToken) {
+  if (AccessToken) {
     headers['Authorization'] = `Bearer ${AccessToken}`;
   }
 
@@ -22,7 +22,7 @@ export const json = async <T = any>(uri: string, method: string = 'GET', body?: 
       headers,
       body: JSON.stringify(body)
     });
-    if(result.ok) {
+    if (result.ok) {
       return <T>(await result.json());
     } else {
       return false;
@@ -34,7 +34,7 @@ export const json = async <T = any>(uri: string, method: string = 'GET', body?: 
 };
 
 
-export const SetAccessToken = (token: string, user: {} = { userid: undefined, role: 'guest'}) => {
+export const SetAccessToken = (token: string, user: {} = { userid: undefined, role: 'guest' }) => {
   AccessToken = token;
   User = user;
 

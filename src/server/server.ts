@@ -5,7 +5,6 @@ import * as passport from 'passport';
 import './middleware/localstrategy';
 import './middleware/bearerstrategy';
 
-
 const app = express();
 
 app.use(express.static('public'));

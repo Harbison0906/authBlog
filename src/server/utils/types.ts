@@ -9,6 +9,6 @@ export interface IPayload {
 export interface ReqUser extends express.Request {
   user: {
     id: number;
-    role: number;
+    role: string;
   }
 }
