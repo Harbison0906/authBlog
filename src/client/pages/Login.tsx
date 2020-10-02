@@ -14,7 +14,7 @@ export default class Login extends Component<ILoginProps, ILoginState> {
   };
 
   componentDidMount() {
-    if(User && User.role === 'guest') {
+    if (User && User.role === 'guest') {
       this.props.history.push('/newblog');
     }
   }
@@ -36,12 +36,7 @@ export default class Login extends Component<ILoginProps, ILoginState> {
       });
       if (result) {
         SetAccessToken(result.token, { userid: result.userid, role: result.role });
-        if (result.role === 1) {
-          this.props.history.push('/newblog');
-        } else {
-          this.props.history.push('/');
-        }
-      } else {
+        this.props.history.push('/');
       }
     } catch (e) {
       throw e;

@@ -1,40 +1,31 @@
 import * as React from 'react';
 import { BrowserRouter, Switch, Route, Link, Redirect } from 'react-router-dom';
-import Home from './components/Home';
-import NewBlog from './components/NewBlog';
-import EditBlog from './components/EditBlog';
-import BlogPost from './components/BlogPost';
-import Login from './components/Login';
+import PrivateRoute from './components/PrivateRoute';
+import Home from './pages/Home';
+import NewBlog from './pages/NewBlog';
+import EditBlog from './pages/EditBlog';
+import BlogPost from './pages/BlogPost';
+import Login from './pages/Login';
+import JumboNav from './components/JumboNav';
 
 export default class App extends React.Component {
 
 	render() {
 		return (
-			<main className="container" id="background">
-				<BrowserRouter>
-					<section className="header" id="header">
-						<div className="jumbotron jumbotron-fluid">
-							<div className="container text-center">
-
-								<h1 className="display-4 align-middle">Attack of the Blog</h1>
-
-							</div>
-							<br />
-						</div>
-						<Link className="link" to="/">Home</Link>
-						<Link className="link" to="/newblog">New Post</Link>
-					</section>
+			<BrowserRouter>
+				<JumboNav />
+				<main className="container" id="background">
 					<Switch>
 						<Route exact path="/" component={Home} />
-						<Route exact path="/newblog" component={NewBlog} />
-						<Route exact path="/edit/:id" component={EditBlog}/>
+						<PrivateRoute exact path="/newblog" component={NewBlog} />
+						<Route exact path="/edit/:id" component={EditBlog} />
 						<Route exact path="/blogpost/:id" component={BlogPost} />
 						<Route exact path="/login" component={Login} />
-						<Redirect from="*" to="/"/>
+						<Redirect from="*" to="/" />
 					</Switch>
-				</BrowserRouter>
+				</main>
+			</BrowserRouter>
 
-			</main>
 		);
 	}
 }

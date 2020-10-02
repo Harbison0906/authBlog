@@ -11,14 +11,7 @@ export default class BlogPost extends Component<IBlogPostProps, IBlogPostState> 
     super(props);
     this.state = {
       tags: [],
-      blogs: {
-        id: null,
-        title: null,
-        authorid: null,
-        content: null,
-        name: null,
-        _created: null
-      }
+      blogs: null
     };
   }
 
@@ -40,13 +33,13 @@ export default class BlogPost extends Component<IBlogPostProps, IBlogPostState> 
       <section className="row justify-content-center">
         <div className="card shadow-sm">
           <div className="card-body">
-            <h4 className="card-title">{this.state.blogs.title}</h4>
+            <h4 className="card-title">{this.state.blogs?.title}</h4>
             {this.state.tags.map(tag => (
               <span className="badge badge-pill badge-primary mx-2" key={tag.name}>{tag.name}</span>
             ))}
-            <h6 className="card-author">By {this.state.blogs.name}</h6>
-            <p className="card-date">{moment(this.state.blogs._created).format('MMMM Do, YYYY')}</p>
-            <p className="card-text">{this.state.blogs.content}</p>
+            <h6 className="card-author">By {this.state.blogs?.name}</h6>
+            <p className="card-date">{moment(this.state.blogs?._created).format('MMMM Do, YYYY')}</p>
+            <p className="card-text">{this.state.blogs?.content}</p>
           </div>
         </div>
       </section>
@@ -68,8 +61,3 @@ interface IBlogPostState {
   }
 }
 
-// this.setState(prevState => {
-//   const blogs = Object.assign({}, prevState.blogs);
-//   blogs.title = blog.title;
-//   blogs._created = blog._created;
-//   blogs.content = blog.content;
