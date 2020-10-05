@@ -1,53 +1,28 @@
 import React, { Component } from 'react';
-import * as moment from 'moment';
 import { IBlog } from '../utils/interfaces';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { json } from '../utils/api';
+import HomeCard from '../components/HomeCard';
 
 
 export default class Home extends Component<IHomeProps, IHomeState> {
 
-  constructor(props: IHomeProps) {
-    super(props);
-    this.state = {
-      blogs: []
-    }
+  state: IHomeState = {
+    blogs: []
   }
- async componentDidMount() {
-    try {
-      let blogs = await json('/api/blogs');
-      this.setState({ blogs })
-    } catch (e) {
-     console.log(e);
+
+  async componentDidMount() {
+    const blogs = await json('/api/blogs');
+    this.setState({ blogs })
   }
- }
+
   render() {
     return (
       <main className="container timeline">
         <section className="row justify-content-center">
           <>
             {/* modifies and styles each new blog */}
-            {this.state.blogs.map(blog => {
-              return (
-                <div key={blog.id} className="col-md-7">
-                  <div className="card shadow-sm">
-                    <div className="card-body">
-                      <Link to={`/blogpost/${blog.id}`} className="card-title"><h5>{blog.title}</h5></Link>
-                      <h6 className="card-author">By {blog.name}</h6>
-                      <p className="card-date">{moment(blog._created).format('MMMM Do, YYYY')}</p>
-                      <p className="card-text">{blog.content.substring(0, 75)} ...</p>
-                      <Link className="link" to={`/edit/${blog.id}`} >
-                        <button
-                          id="editButton"
-                          className="btn"
-                        >Edit</button>
-                      </Link>
-
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
+            {this.state.blogs.map(blog => <HomeCard key={blog.id} blog={blog}/>)}
           </>
         </section>
       </main>
@@ -56,14 +31,9 @@ export default class Home extends Component<IHomeProps, IHomeState> {
 
 }
 
-export interface IHomeProps extends RouteComponentProps<{ id: string }> { }
+export interface IHomeProps extends RouteComponentProps { }
 
 export interface IHomeState {
   blogs: IBlog[]
 }
 
-// this.setState(prevState => {
-//   const blogs = Object.assign({}, prevState.blogs);
-//   blogs.title = blog.title;
-//   blogs._created = blog._created;
-//   blogs.content = blog.content;

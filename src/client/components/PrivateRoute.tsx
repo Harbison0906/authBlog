@@ -1,26 +1,21 @@
 import * as React from 'react';
-import { Route, Redirect } from 'react-router-dom';
 import { User } from '../utils/api';
+import { Redirect, Route } from 'react-router-dom';
 
-
-
-class PrivateRoute extends React.Component<PrivateRouteProps, PrivateRouteState> {
-
-
-  render() {
-      if (!User || User.userid === null || User.role !== 'guest') {
-        return <Redirect to="/login"/>
-      } else {
-        return <Route {...this.props}/>
-      }
-  };
-
-}
-
-interface PrivateRouteProps {
+const PrivateRoute: React.FC<PrivateRouteProps> = ({component, ...rest }) => {
+  
+  if(User && User.role === 'guest' && User.userid) {
+    return <Route {...rest} component={component}/>
+  } else {
+    return <Redirect to="/login" />
+  }
   
 }
 
-interface PrivateRouteState {}
+interface PrivateRouteProps {
+  exact?: boolean;
+  path: string;
+  component: React.ComponentType<any>;
+}
 
-export default PrivateRoute
+export default PrivateRoute;

@@ -18,7 +18,7 @@ export default class App extends React.Component {
 					<Switch>
 						<Route exact path="/" component={Home} />
 						<PrivateRoute exact path="/newblog" component={NewBlog} />
-						<Route exact path="/edit/:id" component={EditBlog} />
+						<PrivateRoute exact path="/edit/:id" component={EditBlog} />
 						<Route exact path="/blogpost/:id" component={BlogPost} />
 						<Route exact path="/login" component={Login} />
 						<Redirect from="*" to="/" />

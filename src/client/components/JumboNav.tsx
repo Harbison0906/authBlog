@@ -8,12 +8,12 @@ export default class JumboNav extends Component<JumboNavProps, JumboNavState> {
 
   render() {
     return (
-      <section className="header" id="header">
+      
         <div className="jumbotron jumbotron-fluid">
           <div className="container text-center">
             <h1 className="display-4 align-middle">Attack of the Blog</h1>
           </div>
-          <div className="d-flex justify-content-center">
+          <div className="d-flex justify-content-center align-items-center">
             <Link className="btn btn-link mx-2" to="/">
               Home
         </Link>
@@ -23,7 +23,7 @@ export default class JumboNav extends Component<JumboNavProps, JumboNavState> {
           </div>
         </div>
 
-      </section>
+      
     );
   }
 

@@ -1,14 +1,19 @@
 import * as fetch from 'isomorphic-fetch';
 
+interface IUser {
+  userid: string;
+  role: string;
+};
+
 export let AccessToken: string = localStorage.getItem('token') || null;
-export let User: any = {
+export let User: IUser = {
   userid: localStorage.getItem('userid') || null,
   role: localStorage.getItem('role') || null
 };
 
 export const json = async <T = any>(uri: string, method: string = 'GET', body?: {}) => {
 
-  let headers: any = {
+  let headers: { [key: string]: string } = {
     'Content-type': 'application/json'
   };
 
@@ -17,24 +22,35 @@ export const json = async <T = any>(uri: string, method: string = 'GET', body?: 
   }
 
   try {
-    let result = await fetch(uri, {
-      method,
-      headers,
-      body: JSON.stringify(body)
-    });
-    if (result.ok) {
-      return <T>(await result.json());
-    } else {
-      return false;
-    }
+    let response
+      = await fetch(uri, {
+        method,
+        headers,
+        body: JSON.stringify(body)
+      });
+
+    if (response.status === 401) {
+      throw new Error('Token missing; check localStorage for Login Credentials');
+    };
+
+    if (response.status === 404) {
+      throw new Error('Server Path not found; check Fetch path');
+    };
+
+    if (response
+      .ok) {
+      return <T>(await response.json());
+    };
   } catch (error) {
-    console.log(error);
-    throw error;
+    console.error(error.message);
   }
 };
 
 
-export const SetAccessToken = (token: string, user: {} = { userid: undefined, role: 'guest' }) => {
+export const SetAccessToken = (
+  token: string,
+  user: IUser = { userid: undefined, role: 'guest' }
+) => {
   AccessToken = token;
   User = user;
 

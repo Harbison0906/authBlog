@@ -1,6 +1,4 @@
 import * as express from 'express';
-import * as jwt from 'jsonwebtoken';
-import config from '../../config';
 import db from '../../db';
 import { isLoggedIn } from '../../middleware/auth-middlewares';
 import { ReqUser } from '../../utils/types';

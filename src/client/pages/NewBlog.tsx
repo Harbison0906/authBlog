@@ -13,17 +13,10 @@ export default class NewBlog extends Component<INewBlogProps, INewBlogState> {
     };
   }
 
-  handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ title: event.target.value });
-  }
+  handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => this.setState({ title: event.target.value });
+  handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => this.setState({ content: event.target.value });
+  handleTagChange = (event: React.ChangeEvent<HTMLSelectElement>) => this.setState({ tagid: event.target.value });
 
-  handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    this.setState({ content: event.target.value });
-  }
-
-  handleTagChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    this.setState({ tagid: event.target.value });
-  }
 
   componentDidMount() {
     if (!User || User.userid === null || User.role !== 'guest') {
@@ -50,13 +43,22 @@ export default class NewBlog extends Component<INewBlogProps, INewBlogState> {
 
       <div className="container">
         <section className="row justify-content-center">
-          <article className="col-md-7">
+          <article className="col-md-12">
             <div className="card shadow-sm">
               <div className="card-body">
                 <form className="form-group">
-                  <input value={this.state.title} onChange={this.handleTitleChange} id="title" type="text" className="form-control shadow-sm" placeholder="Title" aria-label="Title" aria-describedby="basic-addon1" />
+                  <input
+                    value={this.state.title}
+                    onChange={this.handleTitleChange}
+                    id="title" type="text"
+                    className="form-control shadow-sm mb-3"
+                    placeholder="Title"
+                    aria-label="Title"
+                    aria-describedby="basic-addon1" />
 
-                  <select className="form-control" value={this.state.tagid} onChange={this.handleTagChange}>
+                  <select className="form-control shadow-sm mb-3"
+                    value={this.state.tagid}
+                    onChange={this.handleTagChange}>
                     <option value="">Choose a tag ..</option>
                     <option value="1">Traveling</option>
                     <option value="2">Coding</option>
@@ -65,14 +67,14 @@ export default class NewBlog extends Component<INewBlogProps, INewBlogState> {
 
                   <textarea
                     className="shadow-sm form-control mb-3"
-                    aria-label="With textarea"
+                    rows={10}
                     placeholder="Start bloggin'!"
                     value={this.state.content}
                     onChange={this.handleChange}
                   />
                   <button
                     id="addBlog"
-                    className="btn"
+                    className="btn btn-primary"
                     onClick={this.addBlog}  //adds new blog post when "Post" is clicked
                   >Post</button>
                 </form>
